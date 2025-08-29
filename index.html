@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MAESTRO — Event Planning System</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/node-vibrant@3.2.1/dist/vibrant.min.js"></script>
+</head>
+<body>
+<div class="glow"></div>
+
+<nav class="navbar sticky-top">
+  <div class="container-fluid shell-fluid">
+    <div class="brand">
+      <div class="logo"></div>
+      <div>
+        <div class="title">MAESTRO</div>
+        <div class="subtitle">Innovate. Celebrate. Book.</div>
+      </div>
+    </div>
+    <ul class="nav">
+      <li class="nav-item"><a class="nav-link" href="#upcomingEvents">Upcoming</a></li>
+      <li class="nav-item"><a class="nav-link" href="#pastEvents">Past</a></li>
+      <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+      <li class="nav-item"><a class="nav-link" href="#ratingSection">Rate Us</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero" data-aos="fade-up">
+  <div class="shell">
+    <div class="hero-text">
+      <h1>LAUTECH FIRST EVENTS BOOKING</h1>
+      <p>Seamlessly plan and book your campus events with ease.</p>
+    </div>
+    <section class="mt-5">
+      <div id="heroCarousel" class="carousel-lg">
+        </div>
+    </section>
+  </div>
+</header>
+
+<main class="shell">
+  <section id="upcomingEvents" class="mb-5 py-5" data-aos="fade-up">
+    <div class="card p-4">
+      <div class="head">
+        <h3>Upcoming Events</h3>
+        <span class="soft-accent">What's Next?</span>
+      </div>
+      <div class="row g-4" id="upcomingEventsGrid">
+        </div>
+    </div>
+  </section>
+
+  <section id="pastEvents" class="mb-5 py-5" data-aos="fade-up" data-aos-delay="200">
+    <div class="card p-4">
+      <div class="head">
+        <h3>Past Events</h3>
+        <span class="soft-accent">Memorable Moments</span>
+      </div>
+      <div class="row g-4" id="pastEventsGrid">
+        </div>
+    </div>
+  </section>
+  
+  <section id="testimonials" class="mb-5 py-5" data-aos="fade-up">
+    <div class="card p-4">
+      <div class="head">
+        <h3>What Our Clients Say</h3>
+        <span class="soft-accent">Hear from the community</span>
+      </div>
+      <div class="carousel-testimonials" id="testimonialsCarousel">
+        </div>
+    </div>
+  </section>
+
+  <section id="ratingSection" class="mb-5 py-5" data-aos="fade-up" data-aos-delay="200">
+    <div class="card p-4">
+      <div class="head">
+        <h3>Our Ratings</h3>
+        <span class="soft-accent">Your Trust, Our Motivation</span>
+      </div>
+      <div class="text-center p-3">
+        <h1 class="display-3 fw-bold mb-0" style="color:var(--brand);">4.9 <span style="font-size:1.5rem;">/ 5</span></h1>
+        <p class="text-muted">Based on 1,500+ client reviews</p>
+        <div class="stars" style="color: var(--brand);">
+          &#9733;&#9733;&#9733;&#9733;&#9733;
+        </div>
+      </div>
+      <div class="mt-4">
+        <h4 class="text-center mb-3">Rate Your Experience!</h4>
+        <div class="rating-form text-center">
+          <div class="stars-form mb-3" data-rating="0">
+            <span data-value="1">&#9733;</span><span data-value="2">&#9733;</span><span data-value="3">&#9733;</span><span data-value="4">&#9733;</span><span data-value="5">&#9733;</span>
+          </div>
+          <button class="btn" id="submitRatingBtn">Submit Rating</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="text-center text-muted py-4">
+  <small>Dev by <a href="https://praixtech.netlify.app" target="_blank" class="link">Praix Tech</a></small>
+</footer>
+
+<div class="modal" id="bookingModal">
+  <div class="modal-content card">
+    <span class="modal-close" id="closeModal">&times;</span>
+    <div class="head">
+      <h3 id="modalEventTitle">Event Title</h3>
+    </div>
+    <form id="bookingForm">
+      <div class="form-group">
+        <label for="clientName">Your Full Name:</label>
+        <input type="text" id="clientName" placeholder="Your Name" required>
+      </div>
+      <div class="form-group">
+        <label for="clientEmail">Your Email:</label>
+        <input type="email" id="clientEmail" placeholder="Your Email" required>
+      </div>
+      <div id="resources-container">
+        </div>
+      <button type="button" class="btn btn-secondary mt-3" id="addResourceBtn" style="width:100%;">+ Add Another Resource</button>
+      <button type="submit" class="btn" style="width:100%; margin-top:1rem;" id="bookBtn">Book Now</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="successModal">
+  <div class="modal-content card">
+    <span class="modal-close" id="closeSuccessModal">&times;</span>
+    <div class="text-center">
+      <h3 style="color:var(--success);">Booking Successful!</h3>
+      <p id="successMessage"></p>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init({
+    duration: 800,
+    once: true,
+  });
+</script>
+<script src="app.js"></script>
+</body>
+</html>
